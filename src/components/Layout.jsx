@@ -2,8 +2,9 @@ import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 
 const navItems = [
-  { path: '/', label: 'Home', icon: HomeIcon },
-  { path: '/new', label: 'New', icon: PlusIcon },
+  { path: '/', label: 'Jobs', icon: ClipboardIcon, exact: true },
+  { path: '/boats', label: 'Boats', icon: AnchorIcon },
+  { path: '/measurements', label: 'Sails', icon: SailIcon },
   { path: '/settings', label: 'Settings', icon: GearIcon },
 ]
 
@@ -22,7 +23,7 @@ export default function Layout() {
             <path d="M34 14 L34 48 L48 48 Q48 28 34 14Z" fill="#ffffff" opacity="0.6"/>
             <line x1="12" y1="54" x2="52" y2="54" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round"/>
           </svg>
-          <span className="text-lg font-semibold tracking-tight">US Sailing Measurer</span>
+          <span className="text-lg font-semibold tracking-tight">Rigging Pro</span>
         </Link>
         <div className="flex items-center gap-3">
           <span className={`inline-flex items-center gap-1.5 text-xs ${isOnline ? 'text-green-300' : 'text-amber-300'}`}>
@@ -37,16 +38,18 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      {/* Bottom nav (mobile) */}
-      <nav className="fixed bottom-0 inset-x-0 bg-white border-t border-navy-100 z-40 sm:hidden">
-        <div className="flex justify-around items-center h-16">
-          {navItems.map(({ path, label, icon: Icon }) => {
-            const active = path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)
+      {/* Bottom nav */}
+      <nav className="fixed bottom-0 inset-x-0 bg-white border-t border-navy-100 z-40">
+        <div className="flex justify-around items-center h-16 max-w-2xl mx-auto">
+          {navItems.map(({ path, label, icon: Icon, exact }) => {
+            const active = exact
+              ? location.pathname === '/' || location.pathname.startsWith('/job')
+              : location.pathname.startsWith(path)
             return (
               <Link
                 key={path}
                 to={path}
-                className={`flex flex-col items-center gap-0.5 px-4 py-2 text-xs no-underline transition-colors
+                className={`flex flex-col items-center gap-0.5 px-3 py-2 text-xs no-underline transition-colors
                   ${active ? 'text-navy-900' : 'text-navy-400'}`}
               >
                 <Icon className="w-6 h-6" />
@@ -56,41 +59,32 @@ export default function Layout() {
           })}
         </div>
       </nav>
-
-      {/* Desktop nav (sidebar-less — just top links on larger screens) */}
-      <nav className="hidden sm:flex fixed bottom-0 inset-x-0 bg-white border-t border-navy-100 z-40 justify-center gap-8 h-14 items-center">
-        {navItems.map(({ path, label, icon: Icon }) => {
-          const active = path === '/' ? location.pathname === '/' : location.pathname.startsWith(path)
-          return (
-            <Link
-              key={path}
-              to={path}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm no-underline transition-colors
-                ${active ? 'text-navy-900 bg-navy-100 font-medium' : 'text-navy-500 hover:text-navy-700'}`}
-            >
-              <Icon className="w-5 h-5" />
-              <span>{label}</span>
-            </Link>
-          )
-        })}
-      </nav>
     </div>
   )
 }
 
-// Simple inline SVG icons
-function HomeIcon({ className }) {
+// ─── Icons ───
+
+function ClipboardIcon({ className }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
     </svg>
   )
 }
 
-function PlusIcon({ className }) {
+function AnchorIcon({ className }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2.25a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zM12 6.75v14.5M5.25 13.5c0 3.728 3.022 6.75 6.75 6.75s6.75-3.022 6.75-6.75M8.25 10.5h7.5" />
+    </svg>
+  )
+}
+
+function SailIcon({ className }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3L12 19M12 3C12 3 6 9 6 19H12M12 3C12 3 18 9 18 17H12M4 21h16" />
     </svg>
   )
 }

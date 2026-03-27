@@ -98,6 +98,27 @@ export const MEASUREMENT_STATUSES = {
   accepted:  { label: 'Accepted',  badge: 'accepted' },
 }
 
+// ─── Boat & Job Constants ───
+
+export const RIG_TYPES = ['Sloop', 'Cutter', 'Ketch', 'Yawl', 'Cat', 'Schooner', 'Other']
+export const MAST_MATERIALS = ['Aluminum', 'Carbon', 'Wood', 'Other']
+
+export const JOB_TYPES = {
+  sail_measurement:  { label: 'Sail Measurement',           icon: '📐' },
+  standing_rigging:  { label: 'Standing Rigging Inspection', icon: '🔧' },
+  running_rigging:   { label: 'Running Rigging Service',     icon: '🪢' },
+  sail_repair:       { label: 'Sail Repair / Condition',     icon: '🧵' },
+}
+
+export const JOB_STATUSES = {
+  open:        { label: 'Open',        badge: 'draft' },
+  in_progress: { label: 'In Progress', badge: 'pending' },
+  completed:   { label: 'Completed',   badge: 'accepted' },
+  invoiced:    { label: 'Invoiced',    badge: 'submitted' },
+}
+
+// ─── Sail Materials ───
+
 export const MATERIALS = [
   'Dacron',
   'Mylar/Laminate',
