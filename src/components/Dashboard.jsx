@@ -94,7 +94,7 @@ export default function Dashboard() {
                         {formatArea(m.calculatedArea, units)}
                       </div>
                       <div className="text-xs text-navy-400">
-                        {units === 'imperial' ? 'ft\u00B2' : 'm\u00B2'}
+                        {units === 'm' ? 'm\u00B2' : 'ft\u00B2'}
                       </div>
                     </div>
                   )}

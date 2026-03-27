@@ -54,20 +54,20 @@ export default function Settings() {
       <Card className="p-4 space-y-3">
         <h2 className="text-sm font-medium text-navy-500">Preferred Units</h2>
         <div className="flex gap-2">
-          <button
-            onClick={() => setUnits('metric')}
-            className={`flex-1 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              ${units === 'metric' ? 'bg-navy-900 text-white' : 'bg-navy-100 text-navy-600 hover:bg-navy-200'}`}
-          >
-            Metric (m)
-          </button>
-          <button
-            onClick={() => setUnits('imperial')}
-            className={`flex-1 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer
-              ${units === 'imperial' ? 'bg-navy-900 text-white' : 'bg-navy-100 text-navy-600 hover:bg-navy-200'}`}
-          >
-            Imperial (ft)
-          </button>
+          {[
+            { key: 'ftin', label: "FT / IN" },
+            { key: 'ft', label: "FT" },
+            { key: 'm', label: "M" },
+          ].map(({ key, label }) => (
+            <button
+              key={key}
+              onClick={() => setUnits(key)}
+              className={`flex-1 py-3 rounded-lg text-sm font-medium transition-colors cursor-pointer
+                ${units === key ? 'bg-navy-900 text-white' : 'bg-navy-100 text-navy-600 hover:bg-navy-200'}`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </Card>
 

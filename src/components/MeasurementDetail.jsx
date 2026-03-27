@@ -100,10 +100,10 @@ export default function MeasurementDetail() {
         <Card className="p-4 bg-ocean-50 border-ocean-200">
           <h3 className="text-sm font-medium text-navy-500 mb-1">Calculated Sail Area</h3>
           <div className="text-2xl font-bold text-navy-900">
-            {formatArea(data.calculatedArea, 'metric')} m{'\u00B2'}
+            {formatArea(data.calculatedArea, 'm')} m{'\u00B2'}
           </div>
           <div className="text-sm text-navy-500 mt-1">
-            {formatArea(data.calculatedArea, 'imperial')} ft{'\u00B2'}
+            {formatArea(data.calculatedArea, 'ft')} ft{'\u00B2'}
           </div>
         </Card>
       )}

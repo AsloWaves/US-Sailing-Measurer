@@ -62,10 +62,10 @@ export default function ReviewSummary({ data }) {
         <Card className="p-4 bg-ocean-50 border-ocean-200">
           <h3 className="text-sm font-medium text-navy-500 mb-1">Calculated Sail Area</h3>
           <div className="text-2xl font-bold text-navy-900">
-            {formatArea(area, 'metric')} m{'\u00B2'}
+            {formatArea(area, 'm')} m{'\u00B2'}
           </div>
           <div className="text-sm text-navy-500 mt-1">
-            {formatArea(area, 'imperial')} ft{'\u00B2'}
+            {formatArea(area, 'ft')} ft{'\u00B2'}
           </div>
         </Card>
       )}

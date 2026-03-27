@@ -4,7 +4,7 @@ import { getSetting, saveSetting } from '../lib/db'
 const SettingsContext = createContext()
 
 export function SettingsProvider({ children }) {
-  const [units, setUnitsState] = useState('imperial')
+  const [units, setUnitsState] = useState('ftin')
   const [measurerName, setMeasurerNameState] = useState('')
   const [measurerCert, setMeasurerCertState] = useState('')
   const [loaded, setLoaded] = useState(false)

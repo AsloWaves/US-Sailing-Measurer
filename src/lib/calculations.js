@@ -1,6 +1,7 @@
 import { METERS_TO_FEET, SQ_METERS_TO_SQ_FEET } from './constants'
 
-// Unit conversion functions
+// ─── Unit conversion functions ───
+
 export function metersToFeet(m) {
   if (m == null || isNaN(m)) return null
   return m * METERS_TO_FEET
@@ -17,31 +18,64 @@ export function sqMetersToSqFeet(sqm) {
 }
 
 /**
+ * Convert meters to { feet, inches } object.
+ */
+export function metersToFeetInches(m) {
+  if (m == null || isNaN(m)) return { feet: 0, inches: 0 }
+  const totalFeet = m * METERS_TO_FEET
+  const feet = Math.floor(totalFeet)
+  const inches = (totalFeet - feet) * 12
+  return { feet, inches: Math.round(inches * 100) / 100 }
+}
+
+/**
+ * Convert feet + inches to meters.
+ */
+export function feetInchesToMeters(feet, inches) {
+  const ft = (Number(feet) || 0) + (Number(inches) || 0) / 12
+  return ft / METERS_TO_FEET
+}
+
+/**
  * Convert a value for display based on the user's unit preference.
  * Stored values are always in meters.
+ * For 'ftin', returns { feet, inches }. For others returns a number.
  */
 export function convertForDisplay(meters, unit) {
-  if (meters == null || isNaN(meters)) return ''
-  if (unit === 'imperial') return metersToFeet(meters)
-  return meters
+  if (meters == null || isNaN(meters)) return unit === 'ftin' ? { feet: '', inches: '' } : ''
+  if (unit === 'ftin') return metersToFeetInches(meters)
+  if (unit === 'ft') return metersToFeet(meters)
+  return meters // 'm'
 }
 
 /**
  * Convert a user-entered value to meters for storage.
+ * For 'ftin', value should be { feet, inches }.
  */
 export function convertForStorage(value, unit) {
+  if (unit === 'ftin') {
+    const ft = Number(value?.feet) || 0
+    const inches = Number(value?.inches) || 0
+    if (ft === 0 && inches === 0) return null
+    return feetInchesToMeters(ft, inches)
+  }
   if (value == null || value === '' || isNaN(Number(value))) return null
   const num = Number(value)
-  if (unit === 'imperial') return feetToMeters(num)
-  return num
+  if (unit === 'ft') return feetToMeters(num)
+  return num // 'm'
 }
 
 /**
  * Format a measurement value for display with appropriate precision.
  */
 export function formatMeasurement(meters, unit) {
-  const val = convertForDisplay(meters, unit)
-  if (val === '' || val == null) return '—'
+  if (meters == null || isNaN(meters)) return '—'
+  if (unit === 'ftin') {
+    const { feet, inches } = metersToFeetInches(meters)
+    return `${feet}' ${inches.toFixed(1)}"`
+  }
+  const val = unit === 'ft' ? metersToFeet(meters) : meters
+  if (val == null) return '—'
   return val.toFixed(3)
 }
 
@@ -50,7 +84,7 @@ export function formatMeasurement(meters, unit) {
  */
 export function formatArea(sqMeters, unit) {
   if (sqMeters == null || isNaN(sqMeters)) return '—'
-  if (unit === 'imperial') return sqMetersToSqFeet(sqMeters).toFixed(2)
+  if (unit === 'ft' || unit === 'ftin') return sqMetersToSqFeet(sqMeters).toFixed(2)
   return sqMeters.toFixed(2)
 }
 
@@ -58,11 +92,14 @@ export function formatArea(sqMeters, unit) {
  * Get the unit label for display.
  */
 export function unitLabel(unit) {
-  return unit === 'imperial' ? 'ft' : 'm'
+  if (unit === 'ftin') return 'ft/in'
+  if (unit === 'ft') return 'ft'
+  return 'm'
 }
 
 export function areaUnitLabel(unit) {
-  return unit === 'imperial' ? 'ft\u00B2' : 'm\u00B2'
+  if (unit === 'ft' || unit === 'ftin') return 'ft\u00B2'
+  return 'm\u00B2'
 }
 
 // ─── Sail Area Calculations (ORC Formulas) ───
@@ -74,7 +111,6 @@ export function areaUnitLabel(unit) {
 export function mainsailArea(m) {
   const { P, E, MQW, MHW, MTW, MUW, MHB } = m
   if (!P || !E) return null
-  // Use 0 for optional width measurements
   const mqw = MQW || 0
   const mhw = MHW || 0
   const mtw = MTW || 0
