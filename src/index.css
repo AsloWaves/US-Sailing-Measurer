@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy-50: #f0f4f8;
+  --color-navy-100: #d9e2ec;
+  --color-navy-200: #bcccdc;
+  --color-navy-300: #9fb3c8;
+  --color-navy-400: #829ab1;
+  --color-navy-500: #627d98;
+  --color-navy-600: #486581;
+  --color-navy-700: #334e68;
+  --color-navy-800: #243b53;
+  --color-navy-900: #1e3a5f;
+  --color-navy-950: #102a43;
+
+  --color-ocean-50: #f0f7fd;
+  --color-ocean-100: #e6f0fa;
+  --color-ocean-200: #b6d4f0;
+  --color-ocean-300: #86b8e6;
+  --color-ocean-400: #569cdc;
+  --color-ocean-500: #2680d2;
+
+  --color-sync-green: #22c55e;
+  --color-sync-amber: #f59e0b;
+  --color-sync-red: #ef4444;
+}
+
+@layer base {
+  body {
+    @apply bg-navy-50 text-navy-950 antialiased;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input[type="number"],
+  input[type="text"],
+  input[type="date"],
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
