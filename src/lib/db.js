@@ -1,14 +1,14 @@
 import { openDB } from 'idb'
 
 const DB_NAME = 'us-sailing-measurer'
-const DB_VERSION = 2
+const DB_VERSION = 7
 
 let dbPromise = null
 
 export function getDB() {
   if (!dbPromise) {
     dbPromise = openDB(DB_NAME, DB_VERSION, {
-      upgrade(db, oldVersion) {
+      upgrade(db, oldVersion, _newVersion, transaction) {
         // v1: measurements + settings
         if (oldVersion < 1) {
           const mStore = db.createObjectStore('measurements', { keyPath: 'id' })
@@ -29,6 +29,40 @@ export function getDB() {
           jStore.createIndex('date', 'date')
           jStore.createIndex('status', 'status')
           jStore.createIndex('syncStatus', 'syncStatus')
+        }
+        // v3: standing rigging
+        if (oldVersion < 3) {
+          const srStore = db.createObjectStore('standing_rigging', { keyPath: 'id' })
+          srStore.createIndex('jobId', 'jobId')
+          srStore.createIndex('boatId', 'boatId')
+          srStore.createIndex('syncStatus', 'syncStatus')
+        }
+        // v4: running rigging
+        if (oldVersion < 4) {
+          const rrStore = db.createObjectStore('running_rigging', { keyPath: 'id' })
+          rrStore.createIndex('jobId', 'jobId')
+          rrStore.createIndex('boatId', 'boatId')
+          rrStore.createIndex('syncStatus', 'syncStatus')
+        }
+        // v5: sail repairs
+        if (oldVersion < 5) {
+          const repStore = db.createObjectStore('sail_repairs', { keyPath: 'id' })
+          repStore.createIndex('jobId', 'jobId')
+          repStore.createIndex('boatId', 'boatId')
+          repStore.createIndex('syncStatus', 'syncStatus')
+        }
+        // v6: photos
+        if (oldVersion < 6) {
+          const phStore = db.createObjectStore('photos', { keyPath: 'id' })
+          phStore.createIndex('parentId', 'parentId')
+          phStore.createIndex('parentType', 'parentType')
+        }
+        // v7: jobId index on measurements
+        if (oldVersion < 7) {
+          const mStore = transaction.objectStore('measurements')
+          if (!mStore.indexNames.contains('jobId')) {
+            mStore.createIndex('jobId', 'jobId')
+          }
         }
       }
     })
@@ -116,6 +150,41 @@ export const getAllJobs = () => getAllRecords('jobs', 'date')
 export const deleteJob = (id) => deleteRecord('jobs', id)
 export const getJobsByBoat = (boatId) => getByIndex('jobs', 'boatId', boatId)
 export const getUnsyncedJobs = () => getByIndex('jobs', 'syncStatus', 'pending')
+
+// ─── Standing Rigging CRUD ───
+
+export const saveStandingRigging = (r) => saveRecord('standing_rigging', r)
+export const getStandingRigging = (id) => getRecord('standing_rigging', id)
+export const getAllStandingRigging = () => getAllRecords('standing_rigging', 'date')
+export const deleteStandingRigging = (id) => deleteRecord('standing_rigging', id)
+export const getStandingRiggingByJob = (jobId) => getByIndex('standing_rigging', 'jobId', jobId)
+
+// ─── Running Rigging CRUD ───
+
+export const saveRunningRigging = (r) => saveRecord('running_rigging', r)
+export const getRunningRigging = (id) => getRecord('running_rigging', id)
+export const getAllRunningRigging = () => getAllRecords('running_rigging', 'date')
+export const deleteRunningRigging = (id) => deleteRecord('running_rigging', id)
+export const getRunningRiggingByJob = (jobId) => getByIndex('running_rigging', 'jobId', jobId)
+
+// ─── Sail Repair CRUD ───
+
+export const saveSailRepair = (r) => saveRecord('sail_repairs', r)
+export const getSailRepair = (id) => getRecord('sail_repairs', id)
+export const getAllSailRepairs = () => getAllRecords('sail_repairs', 'date')
+export const deleteSailRepair = (id) => deleteRecord('sail_repairs', id)
+export const getSailRepairsByJob = (jobId) => getByIndex('sail_repairs', 'jobId', jobId)
+
+// ─── Photo CRUD ───
+
+export const savePhoto = (p) => saveRecord('photos', p)
+export const getPhoto = (id) => getRecord('photos', id)
+export const deletePhoto = (id) => deleteRecord('photos', id)
+export const getPhotosByParent = (parentId) => getByIndex('photos', 'parentId', parentId)
+
+// ─── Measurement by Job ───
+
+export const getMeasurementsByJob = (jobId) => getByIndex('measurements', 'jobId', jobId)
 
 // ─── Settings ───
 

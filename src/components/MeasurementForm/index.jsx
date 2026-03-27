@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
-import { saveMeasurement, getMeasurement, saveDraft, getDraft, clearDraft } from '../../lib/db'
+import { saveMeasurement, getMeasurement, saveDraft, getDraft, clearDraft, getJob, getBoat } from '../../lib/db'
 import { calculateArea } from '../../lib/calculations'
 import Button from '../ui/Button'
 import BoatInfo from './BoatInfo'
@@ -29,20 +29,38 @@ const emptyData = () => ({
 })
 
 export default function MeasurementForm() {
-  const { id } = useParams()
+  const { id, jobId } = useParams()
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [data, setData] = useState(emptyData)
   const [loaded, setLoaded] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  // Load existing measurement for edit, or check for draft
+  // Load existing measurement for edit, job context, or check for draft
   useEffect(() => {
     async function load() {
       if (id) {
         const existing = await getMeasurement(id)
         if (existing) {
           setData(existing)
+          setLoaded(true)
+          return
+        }
+      }
+      // Pre-fill from job context
+      if (jobId) {
+        const job = await getJob(jobId)
+        if (job) {
+          const boat = job.boatId ? await getBoat(job.boatId) : null
+          setData(d => ({
+            ...d,
+            jobId,
+            boatId: job.boatId || '',
+            boatName: boat?.name || job.boatName || '',
+            boatClass: boat?.boatClass || '',
+            sailNumber: boat?.sailNumber || '',
+            ownerName: boat?.ownerName || '',
+          }))
           setLoaded(true)
           return
         }
@@ -55,7 +73,7 @@ export default function MeasurementForm() {
       setLoaded(true)
     }
     load()
-  }, [id])
+  }, [id, jobId])
 
   // Auto-save draft (debounced)
   useEffect(() => {

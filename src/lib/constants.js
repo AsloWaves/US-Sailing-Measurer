@@ -117,6 +117,83 @@ export const JOB_STATUSES = {
   invoiced:    { label: 'Invoiced',    badge: 'submitted' },
 }
 
+// ─── Standing Rigging Constants ───
+
+export const STANDING_RIGGING_COMPONENTS = {
+  forestay:    { label: 'Forestay', category: 'Stays' },
+  backstay:    { label: 'Backstay', category: 'Stays' },
+  baby_stay:   { label: 'Baby Stay / Inner Forestay', category: 'Stays' },
+  v1_port:     { label: 'Upper Shroud V1 (Port)', category: 'Shrouds' },
+  v1_stbd:     { label: 'Upper Shroud V1 (Starboard)', category: 'Shrouds' },
+  v2_port:     { label: 'Intermediate V2 (Port)', category: 'Shrouds' },
+  v2_stbd:     { label: 'Intermediate V2 (Starboard)', category: 'Shrouds' },
+  d1_port:     { label: 'Lower Shroud D1 (Port)', category: 'Shrouds' },
+  d1_stbd:     { label: 'Lower Shroud D1 (Starboard)', category: 'Shrouds' },
+  d2_port:     { label: 'Lower Shroud D2 (Port)', category: 'Shrouds' },
+  d2_stbd:     { label: 'Lower Shroud D2 (Starboard)', category: 'Shrouds' },
+  chainplate_port:  { label: 'Chainplate (Port)', category: 'Hardware' },
+  chainplate_stbd:  { label: 'Chainplate (Starboard)', category: 'Hardware' },
+  spreader_1_port:  { label: 'Spreader L1 (Port)', category: 'Hardware' },
+  spreader_1_stbd:  { label: 'Spreader L1 (Starboard)', category: 'Hardware' },
+  mast_step:        { label: 'Mast Step', category: 'Mast' },
+  mast_head:        { label: 'Masthead Fittings', category: 'Mast' },
+  tang_port:        { label: 'Tang (Port)', category: 'Fittings' },
+  tang_stbd:        { label: 'Tang (Starboard)', category: 'Fittings' },
+  toggle_port:      { label: 'Toggle (Port)', category: 'Fittings' },
+  toggle_stbd:      { label: 'Toggle (Starboard)', category: 'Fittings' },
+}
+
+export const WIRE_TYPES = ['1x19 Wire', 'Rod', 'Dyform', 'PBO', 'Dyneema', 'Compacted Strand', 'Other']
+export const WIRE_MATERIALS = ['316 SS', 'Nitronic 50', '17-4PH SS', 'PBO', 'Carbon', 'Titanium', 'Other']
+export const TURNBUCKLE_TYPES = ['Open Body', 'Closed Body', 'T-Bolt', 'Hydraulic', 'Other']
+
+export const CONDITION_RATINGS = [
+  { value: 5, label: 'Like New', color: 'green' },
+  { value: 4, label: 'Good', color: 'green' },
+  { value: 3, label: 'Fair', color: 'amber' },
+  { value: 2, label: 'Poor - Monitor', color: 'amber' },
+  { value: 1, label: 'Replace Now', color: 'red' },
+]
+
+// ─── Running Rigging Constants ───
+
+export const RUNNING_RIGGING_LINES = {
+  main_halyard:  { label: 'Main Halyard', category: 'Halyards' },
+  jib_halyard:   { label: 'Jib Halyard', category: 'Halyards' },
+  spin_halyard:  { label: 'Spinnaker Halyard', category: 'Halyards' },
+  main_sheet:    { label: 'Main Sheet', category: 'Sheets' },
+  jib_sheets:    { label: 'Jib Sheets', category: 'Sheets' },
+  spin_sheets:   { label: 'Spinnaker Sheets', category: 'Sheets' },
+  vang:          { label: 'Vang / Kicker', category: 'Controls' },
+  cunningham:    { label: 'Cunningham', category: 'Controls' },
+  outhaul:       { label: 'Outhaul', category: 'Controls' },
+  backstay_adj:  { label: 'Backstay Adjuster', category: 'Controls' },
+  traveler:      { label: 'Traveler Lines', category: 'Controls' },
+  reef_1:        { label: '1st Reef Line', category: 'Reef' },
+  reef_2:        { label: '2nd Reef Line', category: 'Reef' },
+  reef_3:        { label: '3rd Reef Line', category: 'Reef' },
+  topping_lift:  { label: 'Topping Lift', category: 'Other' },
+  foreguy:       { label: 'Foreguy / Twing', category: 'Other' },
+}
+
+export const LINE_MATERIALS = ['Dyneema', 'Vectran', 'Polyester', 'Spectra', 'Technora', 'PBO', 'Nylon', 'Polypropylene', 'Other']
+export const LINE_CONSTRUCTIONS = ['Double Braid', 'Single Braid', '3-Strand', 'Covered Core', 'Other']
+export const SPLICE_TYPES = ['Eye', 'Brummel', 'Class 2 Cover', 'Tapered', 'Locking', 'None', 'Other']
+export const REPLACEMENT_RECS = [
+  { value: 'now', label: 'Replace Now', color: 'red' },
+  { value: '6_months', label: 'Within 6 Months', color: 'amber' },
+  { value: '12_months', label: 'Within 12 Months', color: 'amber' },
+  { value: 'ok', label: 'OK for Now', color: 'green' },
+]
+export const HARDWARE_TYPES = ['Block', 'Clutch', 'Winch', 'Car', 'Track', 'Shackle', 'Snap Shackle', 'Pad Eye', 'Cleat', 'Organizer', 'Other']
+
+// ─── Sail Repair Constants ───
+
+export const DAMAGE_TYPES = ['Tear', 'UV Damage', 'Chafe', 'Seam Failure', 'Batten Pocket', 'Grommet', 'Delamination', 'Mildew', 'Distortion', 'Other']
+export const REPAIR_TYPES = ['Patch', 'Re-stitch', 'Panel Replace', 'Tape', 'Adhesive', 'Re-cut', 'Reinforcement', 'None Needed', 'Other']
+export const CLOTH_TYPES = ['Woven Dacron', 'Laminate', '3Di', 'Pentex', 'Carbon', 'Mylar', 'Nylon', 'Other']
+export const BATTEN_TYPES = ['Fiberglass', 'Carbon', 'Tapered', 'Full Length', 'Partial', 'None']
+
 // ─── Sail Materials ───
 
 export const MATERIALS = [

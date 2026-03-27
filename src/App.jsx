@@ -11,6 +11,12 @@ import BoatForm from './components/BoatForm'
 import Dashboard from './components/Dashboard'
 import MeasurementForm from './components/MeasurementForm'
 import MeasurementDetail from './components/MeasurementDetail'
+import StandingRiggingForm from './components/StandingRiggingForm'
+import StandingRiggingDetail from './components/StandingRiggingDetail'
+import RunningRiggingForm from './components/RunningRiggingForm'
+import RunningRiggingDetail from './components/RunningRiggingDetail'
+import SailRepairForm from './components/SailRepairForm'
+import SailRepairDetail from './components/SailRepairDetail'
 import Settings from './components/Settings'
 
 const router = createBrowserRouter([
@@ -35,6 +41,22 @@ const router = createBrowserRouter([
       { path: 'new', element: <MeasurementForm /> },
       { path: 'measurement/:id', element: <MeasurementDetail /> },
       { path: 'measurement/:id/edit', element: <MeasurementForm /> },
+      { path: 'job/:jobId/measurement/new', element: <MeasurementForm /> },
+
+      // Standing Rigging
+      { path: 'standing-rigging/new', element: <StandingRiggingForm /> },
+      { path: 'standing-rigging/:id', element: <StandingRiggingDetail /> },
+      { path: 'standing-rigging/:id/edit', element: <StandingRiggingForm /> },
+
+      // Running Rigging
+      { path: 'running-rigging/new', element: <RunningRiggingForm /> },
+      { path: 'running-rigging/:id', element: <RunningRiggingDetail /> },
+      { path: 'running-rigging/:id/edit', element: <RunningRiggingForm /> },
+
+      // Sail Repair
+      { path: 'sail-repair/new', element: <SailRepairForm /> },
+      { path: 'sail-repair/:id', element: <SailRepairDetail /> },
+      { path: 'sail-repair/:id/edit', element: <SailRepairForm /> },
 
       // Settings
       { path: 'settings', element: <Settings /> },
