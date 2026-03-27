@@ -10,6 +10,7 @@ export default function Input({
   showUnit = false,
   className = '',
   error,
+  metersHint,
   ...props
 }) {
   const { units } = useSettings()
@@ -42,6 +43,9 @@ export default function Input({
           </span>
         )}
       </div>
+      {metersHint && (
+        <p className="text-xs font-medium text-ocean-500">{metersHint}</p>
+      )}
       {description && !error && (
         <p className="text-xs text-navy-400">{description}</p>
       )}
@@ -62,6 +66,8 @@ export function FtInInput({
   onBlur,
   className = '',
   error,
+  metersHint,
+  originalDescription,
 }) {
   const feet = value?.feet ?? ''
   const inches = value?.inches ?? ''
@@ -120,8 +126,11 @@ export function FtInInput({
           <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-navy-400 pointer-events-none">in</span>
         </div>
       </div>
-      {description && !error && (
-        <p className="text-xs text-navy-400">{description}</p>
+      {metersHint && (
+        <p className="text-xs font-medium text-ocean-500">{metersHint}</p>
+      )}
+      {(originalDescription || description) && !error && (
+        <p className="text-xs text-navy-400">{originalDescription || description}</p>
       )}
       {error && (
         <p className="text-xs text-sync-red">{error}</p>
