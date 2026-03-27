@@ -90,6 +90,14 @@ export const SAIL_TYPES = {
 
 export const RATING_SYSTEMS = ['PHRF', 'ORR', 'ORC', 'IRC']
 
+// Measurement workflow statuses (separate from GitHub sync status)
+export const MEASUREMENT_STATUSES = {
+  draft:     { label: 'Draft',     badge: 'draft' },
+  pending:   { label: 'Pending',   badge: 'pending' },
+  submitted: { label: 'Submitted', badge: 'submitted' },
+  accepted:  { label: 'Accepted',  badge: 'accepted' },
+}
+
 export const MATERIALS = [
   'Dacron',
   'Mylar/Laminate',

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { getMeasurement, deleteMeasurement } from '../lib/db'
+import { getMeasurement, deleteMeasurement, saveMeasurement } from '../lib/db'
 import { useSettings } from '../context/SettingsContext'
 import { useGitHub } from '../hooks/useGitHub'
-import { SAIL_TYPES, MEASUREMENT_DEFS } from '../lib/constants'
-import { formatMeasurement, formatArea, unitLabel, areaUnitLabel } from '../lib/calculations'
+import { SAIL_TYPES, MEASUREMENT_DEFS, MEASUREMENT_STATUSES } from '../lib/constants'
+import { formatMeasurement, formatArea, unitLabel } from '../lib/calculations'
 import Card from './ui/Card'
 import Badge from './ui/Badge'
 import Button from './ui/Button'
@@ -31,10 +31,18 @@ export default function MeasurementDetail() {
     navigate('/')
   }
 
+  const handleStatusChange = async (newStatus) => {
+    const updated = { ...data, status: newStatus }
+    await saveMeasurement(updated)
+    setData(updated)
+  }
+
   if (loading) return <div className="text-center text-navy-400 py-12">Loading...</div>
   if (!data) return <div className="text-center text-navy-400 py-12">Measurement not found.</div>
 
   const sailDef = SAIL_TYPES[data.sailType]
+  const currentStatus = data.status || 'pending'
+  const statusDef = MEASUREMENT_STATUSES[currentStatus]
 
   return (
     <div className="space-y-4">
@@ -46,12 +54,31 @@ export default function MeasurementDetail() {
             {sailDef && (
               <Badge status="info">{sailDef.icon} {sailDef.label}</Badge>
             )}
-            <Badge status={data.syncStatus || 'pending'}>
-              {data.syncStatus === 'synced' ? 'Synced' : data.syncStatus === 'error' ? 'Error' : 'Pending'}
+            <Badge status={currentStatus}>
+              {statusDef?.label || 'Pending'}
             </Badge>
           </div>
         </div>
       </div>
+
+      {/* Status changer */}
+      <Card className="p-4">
+        <h3 className="text-sm font-medium text-navy-500 mb-2">Status</h3>
+        <div className="flex gap-1.5 flex-wrap">
+          {Object.entries(MEASUREMENT_STATUSES).map(([key, { label }]) => (
+            <button
+              key={key}
+              onClick={() => handleStatusChange(key)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer
+                ${currentStatus === key
+                  ? 'bg-navy-900 text-white'
+                  : 'bg-navy-100 text-navy-600 hover:bg-navy-200'}`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </Card>
 
       {/* Boat info */}
       <Card className="p-4">

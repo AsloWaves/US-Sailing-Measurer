@@ -23,9 +23,14 @@ export function sqMetersToSqFeet(sqm) {
 export function metersToFeetInches(m) {
   if (m == null || isNaN(m)) return { feet: 0, inches: 0 }
   const totalFeet = m * METERS_TO_FEET
-  const feet = Math.floor(totalFeet)
-  const inches = (totalFeet - feet) * 12
-  return { feet, inches: Math.round(inches * 100) / 100 }
+  let feet = Math.floor(totalFeet)
+  let inches = Math.round((totalFeet - feet) * 12 * 100) / 100
+  // Handle rollover: 12 inches = 1 foot
+  if (inches >= 12) {
+    feet += 1
+    inches -= 12
+  }
+  return { feet, inches }
 }
 
 /**
